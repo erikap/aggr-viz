@@ -1,0 +1,15 @@
+{{outlet}}
+
+{{#leaflet-map lat=45.5280916 lng=-122.6652073 zoom=10}}
+
+  {{tile-layer url="http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png"}}
+
+  {{!-- {{#marker-layer lat=45.5280916 lng=-122.6652073}}
+      <h3>Super Rentals HQ</h3>
+      1212 Test Address Avenue<br>
+      Testington, OR 97233
+  {{/marker-layer}} --}}
+
+  {{heatmap-layer data=model latField='x' lngField='y' radius=25}}
+
+{{/leaflet-map}}
