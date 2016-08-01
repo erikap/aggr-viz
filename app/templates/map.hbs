@@ -1,15 +1,62 @@
 {{outlet}}
 
-{{#leaflet-map lat=45.5280916 lng=-122.6652073 zoom=10}}
 
-  {{tile-layer url="http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png"}}
+<div class="container">
+    <div clas="row">
+        <div class="col s6">
+            {{#md-card title="Heatmap"}}
+                {{#md-card-content}}
+                  <div class="row">
+                      {{md-select content=model
+                                  value=selected_dataset_id
+                                  label="Name of the dataset"
+                                  prompt="Please choose..."
+                                  class="col s10"
+                                  optionLabelPath="content.title"
+                                  optionValuePath="content.id" class="col s6"
+                      }}
 
-  {{!-- {{#marker-layer lat=45.5280916 lng=-122.6652073}}
-      <h3>Super Rentals HQ</h3>
-      1212 Test Address Avenue<br>
-      Testington, OR 97233
-  {{/marker-layer}} --}}
+                  {{#with selected_dataset.aggregations as |aggregations|}}
+                    {{md-select content=aggregations
+                                  value=selected_aggregation_id
+                                  label="Name of the aggregation"
+                                  prompt="Please choose..."
+                                  class="col s10"
+                                  optionLabelPath="content.id"
+                                  optionValuePath="content.id" class="col s6"
+                    }}
+                  {{/with}}
 
-  {{heatmap-layer data=model latField='x' lngField='y' radius=25}}
+                    {{md-range value=opacity min=0 max=1 step=0.01 name="Opacity" class="col s6"}}
+                  </div>
 
-{{/leaflet-map}}
+                  {{#if selected_aggregation}}
+                    {{#mu-heatmap dataset=selected_aggregation latitude=0 longitude=0 zoom=1 opacity=opacity radius=0.025}}
+                      {{tile-layer url="http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"}}
+                      {{#marker-cluster-layer}}
+                        {{#each markers as |marker|}}
+                          {{#marker-layer location=marker.location}}
+                              <h3>{{marker.title}}</h3>
+                            {{marker.description}}
+                          {{/marker-layer}}
+                        {{/each}}
+                      {{/marker-cluster-layer}}
+                    {{/mu-heatmap}}
+                  {{/if}}
+                {{/md-card-content}}
+
+                {{#md-card-action}}
+                  {{md-btn text='Clear' icon='mdi-action-favorite' action='clear' isDisabled=no_dataset}}
+                {{/md-card-action}}
+            {{/md-card}}
+        </div>
+    </div>
+
+</div>
+
+<div id="test"></div>
+
+{{!--
+
+--}}
+

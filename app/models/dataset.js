@@ -3,6 +3,6 @@ import attr from 'ember-data/attr';
 import { hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
-  title: attr(),
-  centroids: hasMany('centroid')
+  title: attr('string'),
+  aggregations: hasMany('aggregation')
 });
