@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import Point from 'ember-leaflet/helpers/point';
-import $ from 'jquery';
 
 export default Ember.Controller.extend({
   selected_dataset_id: null,
@@ -9,6 +7,7 @@ export default Ember.Controller.extend({
   selected_aggregation_id: null,
   selected_aggregation: null,
   markers: null,
+  properties: ['iterations', 'numcentroids', 'start', 'end', 'gridsize'],
 
   opacity: 0.85,
   no_dataset: function () {
@@ -21,9 +20,6 @@ export default Ember.Controller.extend({
         .get('store')
         .peekRecord('dataset', this.get('selected_dataset_id'));
     this.set('selected_dataset', dataset);
-    Ember.run.later(function() {
-      $('select').material_select();
-    });
   }),
 
   aggregationIdObserver: Ember.observer('selected_aggregation_id', function () {

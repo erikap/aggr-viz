@@ -16,13 +16,13 @@
                                   optionValuePath="content.id" class="col s6"
                       }}
 
-                  {{#with selected_dataset.aggregations as |aggregations|}}
+                  {{#with selected_dataset.sortedAggregations as |aggregations|}}
                     {{md-select content=aggregations
                                   value=selected_aggregation_id
                                   label="Name of the aggregation"
                                   prompt="Please choose..."
                                   class="col s10"
-                                  optionLabelPath="content.id"
+                                  optionLabelPath="content.title"
                                   optionValuePath="content.id" class="col s6"
                     }}
                   {{/with}}
@@ -31,7 +31,31 @@
                   </div>
 
                   {{#if selected_aggregation}}
-                    {{#mu-heatmap dataset=selected_aggregation latitude=0 longitude=0 zoom=1 opacity=opacity radius=0.025}}
+                    <div class="row">
+                        <ul>
+                            <li><b>Identifier:</b> {{selected_aggregation.id}}</li>
+                            {{#if selected_aggregation.iterations}}
+                                <li><b>Iterations:</b> {{selected_aggregation.iterations}}</li>
+                            {{/if}}
+                            {{#if selected_aggregation.numcentroids}}
+                                <li><b>Number of centroids:</b> {{selected_aggregation.numcentroids}}</li>
+                            {{/if}}
+                            {{#if selected_aggregation.start}}
+                                <li><b>Start time:</b> {{selected_aggregation.start}}</li>
+                            {{/if}}
+                            {{#if selected_aggregation.end}}
+                                <li><b>End time:</b> {{selected_aggregation.end}}</li>
+                                <li><b>Duration:</b> {{selected_aggregation.duration_str}}</li>
+                            {{/if}}
+                            {{#if selected_aggregation.gridsize}}
+                                <li><b>Grid size:</b> {{selected_aggregation.gridsize}}</li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                  {{/if}}
+
+                  {{#if selected_aggregation}}
+                    {{#mu-heatmap dataset=selected_aggregation latitude=0 longitude=0 zoom=1 opacity=opacity radius=0.01}}
                       {{tile-layer url="http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"}}
                       {{#marker-cluster-layer}}
                         {{#each markers as |marker|}}
