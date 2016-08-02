@@ -7,6 +7,7 @@
             {{#md-card title="Heatmap"}}
                 {{#md-card-content}}
                   <div class="row">
+                      <h5>Select an aggregation</h5>
                       {{md-select content=model
                                   value=selected_dataset_id
                                   label="Name of the dataset"
@@ -16,20 +17,26 @@
                                   optionValuePath="content.id" class="col s6"
                       }}
 
-                  {{#with selected_dataset.sortedAggregations as |aggregations|}}
-                    {{md-select content=aggregations
-                                  value=selected_aggregation_id
-                                  label="Name of the aggregation"
-                                  prompt="Please choose..."
-                                  class="col s10"
-                                  optionLabelPath="content.title"
-                                  optionValuePath="content.id" class="col s6"
-                    }}
-                  {{/with}}
-
-                    {{md-range value=opacity min=0 max=1 step=0.01 name="Opacity" class="col s6"}}
+                      {{#with selected_dataset.sortedAggregations as |aggregations|}}
+                        {{md-select content=aggregations
+                        value=selected_aggregation_id
+                        label="Name of the aggregation"
+                        prompt="Please choose..."
+                        class="col s10"
+                        optionLabelPath="content.title"
+                        optionValuePath="content.id" class="col s6"
+                        }}
+                      {{/with}}
                   </div>
-
+                  <div class="row">
+                    <h5>Adjust the visualisation</h5>
+                    {{md-range value=opacity min=0 max=1 step=0.001 name="Opacity" class="col s6"}}
+                    {{md-range value=radius min=0 max=1 step=0.001 name="Radius" class="col s6"}}
+                    {{md-range value=blur min=0 max=1 step=0.01 name="Blur" class="col s6"}}
+                    {{md-switch checked=scaleRadius name="Scale radius for zoom" class="col s6"}}
+                    {{md-switch checked=localExtrema name="Use local extrema for heat" class="col s6"}}
+                    {{md-switch checked=showMarkers name="Show markers" class="col s6"}}
+                  </div>
                   {{#if selected_aggregation}}
                     <div class="row">
                         <ul>
@@ -37,8 +44,8 @@
                             {{#if selected_aggregation.iterations}}
                                 <li><b>Iterations:</b> {{selected_aggregation.iterations}}</li>
                             {{/if}}
-                            {{#if selected_aggregation.numcentroids}}
-                                <li><b>Number of centroids:</b> {{selected_aggregation.numcentroids}}</li>
+                            {{#if selected_aggregation.numCentroids}}
+                                <li><b>Number of centroids:</b> {{selected_aggregation.numCentroids}}</li>
                             {{/if}}
                             {{#if selected_aggregation.start}}
                                 <li><b>Start time:</b> {{selected_aggregation.start}}</li>
@@ -47,24 +54,26 @@
                                 <li><b>End time:</b> {{selected_aggregation.end}}</li>
                                 <li><b>Duration:</b> {{selected_aggregation.duration_str}}</li>
                             {{/if}}
-                            {{#if selected_aggregation.gridsize}}
-                                <li><b>Grid size:</b> {{selected_aggregation.gridsize}}</li>
+                            {{#if selected_aggregation.gridSize}}
+                                <li><b>Grid size:</b> {{selected_aggregation.gridSize}}</li>
                             {{/if}}
                         </ul>
                     </div>
                   {{/if}}
 
                   {{#if selected_aggregation}}
-                    {{#mu-heatmap dataset=selected_aggregation latitude=0 longitude=0 zoom=1 opacity=opacity radius=0.01}}
+                    {{#mu-heatmap dataset=selected_aggregation latitude=0 longitude=0 zoom=1 opacity=opacity radius=radius scaleRadius=scaleRadius useLocalExtrema=localExtrema blur=blur}}
                       {{tile-layer url="http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"}}
-                      {{#marker-cluster-layer}}
-                        {{#each markers as |marker|}}
-                          {{#marker-layer location=marker.location}}
-                              <h3>{{marker.title}}</h3>
-                            {{marker.description}}
-                          {{/marker-layer}}
-                        {{/each}}
-                      {{/marker-cluster-layer}}
+                      {{#if showMarkers}}
+                        {{#marker-cluster-layer}}
+                          {{#each markers as |marker|}}
+                            {{#marker-layer location=marker.location}}
+                                <h3>{{marker.title}}</h3>
+                              {{marker.description}}
+                            {{/marker-layer}}
+                          {{/each}}
+                        {{/marker-cluster-layer}}
+                      {{/if}}
                     {{/mu-heatmap}}
                   {{/if}}
                 {{/md-card-content}}

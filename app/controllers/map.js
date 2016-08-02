@@ -7,9 +7,15 @@ export default Ember.Controller.extend({
   selected_aggregation_id: null,
   selected_aggregation: null,
   markers: null,
-  properties: ['iterations', 'numcentroids', 'start', 'end', 'gridsize'],
+  properties: ['iterations', 'numCentroids', 'start', 'end', 'gridSize'],
 
-  opacity: 0.85,
+  opacity: 0,
+  radius: 0.025,
+  blur: 0.9,
+  scaleRadius: true,
+  localExtrema: false,
+  showMarkers: false,
+
   no_dataset: function () {
     return this.get('selected_dataset') === null;
   }.property('selected_dataset'),
