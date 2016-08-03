@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import _ from 'lodash';
 import moment from 'moment';
 import Model from 'ember-data/model';
 import attr from 'ember-data/attr';
@@ -21,6 +22,16 @@ export default Model.extend({
   // Grid
   gridSize: attr('number'),
 
+  // Average
+  components: attr('string'),
+  amount: attr('number'),
+
+  // Diff
+  subtrahend: attr('string'),
+
+  // Average & Diff
+  aggregationKey: attr('string'),
+
   // Relations
   measurements: hasMany('measurement'),
 
@@ -39,7 +50,9 @@ export default Model.extend({
         title = `Grid (epsilon = ${this.get('gridSize')})`;
         break;
       case baseUrl+"DiffAggregation":
-        title = `DiffAggregation`;
+        return `DiffAggregation (from ${this.getAggName(this.get('subtrahend'))} by ${this.get('aggregationKey')})`;
+      case baseUrl+"AverageAggregation":
+        title = `AvgAggregation (${this.get('amount')} components by ${this.get('aggregationKey')})`;
         break;
       case baseUrl+"BasicAggregation":
         title = `BasicAggregation`;
@@ -62,5 +75,28 @@ export default Model.extend({
 
   duration_str: Ember.computed('duration', function () {
     return this.get('duration').humanize();
-  })
+  }),
+
+  components_str : Ember.computed('components', function () {
+    return this.getAggNamesString(this.get('components'));
+  }),
+
+  subtrahend_str : Ember.computed('subtrahend', function () {
+    return this.getAggName(this.get('subtrahend'));
+  }),
+
+  getAggName: function (subtrahendString) {
+    let fileName = subtrahendString.substr(subtrahendString.lastIndexOf("/")+1);
+    return fileName.split(".")[0];
+  },
+
+  getAggNames: function (othersString) {
+    let othersStr = othersString.split(",");
+    return _.map(othersStr, this.getAggName);
+  },
+
+  getAggNamesString: function (othersString) {
+    let fileNames = this.getAggNames(othersString);
+    return `[${fileNames.join(", ")}]`;
+  }
 });

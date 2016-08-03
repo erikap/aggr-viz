@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import _ from 'lodash';
 
 export default Ember.Controller.extend({
   selected_dataset_id: null,
@@ -9,11 +10,20 @@ export default Ember.Controller.extend({
   markers: null,
   properties: ['iterations', 'numCentroids', 'start', 'end', 'gridSize'],
 
-  opacity: 0,
+  avg_lat: 0,
+  avg_lon: 0,
+  opacity: 0.5,
   radius: 0.025,
+  maxRadius: Ember.computed('scaleRadius', function () {
+    if (this.get('scaleRadius')) {
+      return 1;
+    } else {
+      return 200;
+    }
+  }),
   blur: 0.9,
   scaleRadius: true,
-  localExtrema: false,
+  localExtrema: true,
   showMarkers: false,
 
   no_dataset: function () {
@@ -50,6 +60,12 @@ export default Ember.Controller.extend({
           });
 
         self.set('markers', data);
+
+        let latitudes = centroids.map(centroid => centroid.get('latitude'));
+        let longitudes = centroids.map(centroid => centroid.get('longitude'));
+
+        self.set('avg_lat', _(latitudes).sum() / latitudes.length);
+        self.set('avg_lon', _(longitudes).sum() / longitudes.length);
       });
   }),
 
