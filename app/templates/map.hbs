@@ -7,7 +7,7 @@
             {{#md-card title="Heatmap"}}
                 {{#md-card-content}}
                   <div class="row">
-                      <h5>Select an aggregation</h5>
+                      <h5 class="padded">Select an aggregation</h5>
                       {{md-select content=model
                                   value=selected_dataset_id
                                   label="Name of the dataset"
@@ -29,7 +29,7 @@
                       {{/with}}
                   </div>
                   <div class="row">
-                    <h5>Adjust the visualisation</h5>
+                    <h5 class="padded">Adjust the visualisation</h5>
                     {{md-range value=opacity min=0 max=1 step=0.001 name="Opacity" class="col s6"}}
                     {{md-range value=radius min=0 max=1 step=0.001 name="Radius" class="col s6"}}
                     {{md-range value=blur min=0 max=1 step=0.01 name="Blur" class="col s6"}}
@@ -39,7 +39,7 @@
                   </div>
                   {{#if selected_aggregation}}
                     <div class="row">
-                        <ul>
+                        <ul class="padded">
                             <li><b>Identifier:</b> {{selected_aggregation.id}}</li>
                             {{#if selected_aggregation.iterations}}
                                 <li><b>Iterations:</b> {{selected_aggregation.iterations}}</li>
