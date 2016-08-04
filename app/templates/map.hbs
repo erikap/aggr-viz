@@ -74,7 +74,7 @@
                   {{/if}}
 
                   {{#if selected_aggregation}}
-                    {{#mu-heatmap dataset=selected_aggregation latitude=avg_lat longitude=avg_lon zoom=zoom
+                    {{#aggr-heatmap dataset=selected_aggregation latitude=avg_lat longitude=avg_lon zoom=zoom
                                   opacity=opacity radius=radius scaleRadius=scaleRadius useLocalExtrema=localExtrema
                                   blur=blur}}
                       {{tile-layer url="http://a.tile.openstreetmap.org/{z}/{x}/{y}.png"}}
@@ -88,7 +88,7 @@
                           {{/each}}
                         {{/marker-cluster-layer}}
                       {{/if}}
-                    {{/mu-heatmap}}
+                    {{/aggr-heatmap}}
                   {{/if}}
                 {{/md-card-content}}
 
