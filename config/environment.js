@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'ember-heatmap-dev',
+    modulePrefix: 'aggr-viz',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
