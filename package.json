@@ -1,6 +1,6 @@
 {
   "name": "aggr-viz",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Ember (2.5+) application that allows the user to select datasets and aggregations and to visualise them on a map, using Leaflet.",
   "private": true,
   "directories": {
