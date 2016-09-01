@@ -1,6 +1,9 @@
 // Fix for Roboto font path
 $roboto-font-path: '../assets/';
 
+$primary-color: color("pink", "accent-4");
+$secondary-color: color("blue-grey", "lighten-1");
+
 // Materialize styles
 @import "materialize";
 
