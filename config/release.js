@@ -22,7 +22,7 @@ module.exports = {
       });
 
       task.run({
-        environment: 'production',
+        environment: 'development',
         outputPath: 'dist/'
       }).then( function() {
         // zip the latest sources
